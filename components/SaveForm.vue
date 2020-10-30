@@ -41,10 +41,11 @@ export default {
   methods: {
     async validate({ $axios }) {
       var inputVal = document.getElementById("zipcode")
+
       try{
-        console.log(inputVal.value)
-        //const res = await axios.get('https://viacep.com.br/ws/'+ inputVal.value +'/json/');
-        //console.log(res.data)
+        console.log(inputVal)
+        const res = await axios.get('https://viacep.com.br/ws/'+ inputVal.value.replace(".", "").replace("-", "") +'/json/');
+        console.log(res.data)
       } catch(err){
         console.log(err)
       }
