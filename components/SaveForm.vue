@@ -4,12 +4,8 @@
         <h1 class="display-1"> Salve o Endereco </h1>
       </v-card-title>
       <v-card-text>
-        <v-form>
-          <v-text-field 
-          label="Nome do endereco" 
-          name="adress-name" 
-          value=""
-          />
+        <v-form
+        >
           <v-row
             class="align-bottom"
           >
@@ -21,6 +17,8 @@
               <v-text-field
               class=""
               v-model="cep"
+              :rules ="cepRules"
+              required
               v-mask="'##.###-###'" 
               label="CEP" 
               id="zipcode"
@@ -44,20 +42,20 @@
           <v-text-field             
             v-model="address.logradouro"
             label="Logradouro"
-            :disabled="true"
           />
           <v-text-field             
             v-model="address.bairro"
             label="Bairro"
-            :disabled="true"
+            :disabled="true"   
           />
           <v-text-field             
-            v-model="number"
+            v-model="address.numero"
             label="Numero"
-            required="true"
+            :rules="numberRules"
+            required
           />
           <v-text-field             
-            v-model="complement"
+            v-model="address.complemento"
             label="Complemento"
           />
           <v-text-field             
@@ -78,6 +76,7 @@
         >          
           <v-btn
             color="success"
+            type="submit"
           > 
           Salvar 
           </v-btn>
@@ -96,10 +95,16 @@ export default {
   },
   data () {
     return {
+      saveData: [],
       cep: "",
       address: {},
-      number: "",
-      complement: ""
+      cepRules: [
+        v => !!v || 'Insira um CEP',
+        v => v.length >= 10  || 'Insira um CEP Valido', 
+      ],
+      numberRules: [
+        v => !!v || 'Favor inserir o numero da residencia'
+      ]
     }
 
   },
@@ -107,24 +112,22 @@ export default {
     search(){
       if(this.cep && this.cep.length === 10){
         this.validate();
-      }
+      } 
     },
     async validate() {
       try{
         const res = await axios.get(
           `https://viacep.com.br/ws/${this.cep.replace(".","").replace("-","")}/json`
           );
-          this.address = (res.data)
-        console.log(res.data) 
+        this.address = (res.data)
       } catch(err){
-
         console.log(err)
       }
-    }, 
+    },
+
   },
   watch: {
 
   },
-
 }
 </script>
