@@ -13,6 +13,7 @@
     "core-js": "^3.6.5",
     "nuxt": "^2.14.6",
     "v-mask": "^2.2.3",
+    "vee-validate": "^3.4.3",
     "vue-the-mask": "^0.11.1"
   },
   "devDependencies": {
