@@ -129,6 +129,7 @@ export default {
   data () {
     return {
       valid: true,
+      id: "",
       cep: "",
       address: {},
       cepRules: [
@@ -154,7 +155,12 @@ export default {
         const res = await axios.get(
           `https://viacep.com.br/ws/${this.cep.replace(".","").replace("-","")}/json`
           );
-        this.address = (res.data)
+        if(res.data.erro){
+          alert('cep invalido')
+        } else {
+          this.address = (res.data)
+        }
+        
       } catch(err){
         const errorType = error.response.status;
         console.log(error.response)
@@ -164,6 +170,7 @@ export default {
     },
     saveAddress(address){
       this.$refs.observer.validate()
+      address.id = new Date().getTime()
       var addresses = localStorage.getItem('enderecosSalvos')
       if(addresses) {
         
@@ -172,7 +179,7 @@ export default {
       } else {
         addresses = [address]
       }
-
+      this.addresses = addresses;
       localStorage.setItem('enderecosSalvos', JSON.stringify(addresses))
     },
     validate(){

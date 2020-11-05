@@ -15,7 +15,7 @@
       <v-col
         md="6"
       >
-        <AddressCard />
+        <AddressList />
       </v-col> 
       </v-row>
     </v-main>
@@ -24,12 +24,12 @@
 
 <script>
 import SaveForm from "../components/SaveForm"
-import AddressCard from "../components/AddressCard"
+import AddressList from "../components/AddressList"
 
 export default {
   components: {
     SaveForm,
-    AddressCard
+    AddressList
   },
   data () {
     return {
