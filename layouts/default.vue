@@ -34,6 +34,20 @@ export default {
   data () {
     return {
     }
+  },
+  methods:{
+    removeAddress(addressId){
+      let addresses = localStorage.getItem('enderecosSalvos')
+      if(!addresses) return;
+      addresses = JSON.parse(addresses)
+      addresses = addresses.filter((address) => {
+        return address.id != addressId
+      });
+
+      this.addresses = addresses;
+
+      localStorage.setItem('enderecosSalvos', JSON.stringify(addresses))
+    }
   }
 }
 </script>

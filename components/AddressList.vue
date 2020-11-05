@@ -6,7 +6,6 @@
       Meus Enderecos 
     </v-card-title>
     <v-container
-
       v-for="address in addresses"
     >
       <v-row
@@ -22,49 +21,15 @@
             icon
             color="error"
             depressed
-            @click="deleteOverlay = !deleteOverlay"
+            @click.prevent="removeAddress(address.id)"
           >
           <v-icon>mdi-trash-can</v-icon>
           </v-btn>
-          <v-overlay
-            :value="deleteOverlay"
-          >
-            <v-sheet
-              width="450"
-              elevation="2"
-              height="150"
-            >
-              <v-row
-                class="justify-center align-item-center"
-              >
-                <v-col
-                  sm="12"
-                >
-                <p class="text-center pt-3">Voce tem certeza que quer deletar o endereco?</p>
-                </v-col>
-                <v-col
-                  sm="8"
-                  class="d-flex justify-space-around pa-0"
-                >
-                <v-btn
-                  color="secondary"
-                  @click="deleteOverlay=false"
-                > Cancelar </v-btn>
-                <v-btn
-                  color="error"
-                  @click.prevent="removeAddress(address.id)"
-                > 
-                  Deletar
-                </v-btn>
-                </v-col>
-              </v-row>
-            </v-sheet>
-          </v-overlay>
-
           <v-btn
             icon
             depressed
             color="secondary"
+            @click="editAddress(address)"
           > 
           <v-icon>mdi-clipboard-edit</v-icon>
           </v-btn>
@@ -145,21 +110,26 @@
 </template>
 
 <script>
-
+import SaveForm from '../components/SaveForm'
  
 export default {
   components: {
+    SaveForm
   },
   data () {
     return{
-      deleteOverlay: false,
-      addresses: []
+      addresses: [],
+      id: "",
+      cep: "",
+      form: 0,
+      address: {},
     }
   },
   created(){
     },
   mounted(){
-    this.addresses = JSON.parse(localStorage.getItem('enderecosSalvos'))
+    const addresses = JSON.parse(localStorage.getItem('enderecosSalvos'))
+    this.addresses = addresses
 
   },
   methods:{
@@ -174,7 +144,9 @@ export default {
       this.addresses = addresses;
 
       localStorage.setItem('enderecosSalvos', JSON.stringify(addresses))
-      deleteOverlay=false
+    },
+    editAddress(address){
+      this.address = address
     }
   },
   watch:{

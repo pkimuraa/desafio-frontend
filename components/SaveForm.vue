@@ -11,6 +11,7 @@
           <v-form
             ref="form"
             v-model="valid"
+            :key="form"
           >
             <ValidationProvider
               rules="required"
@@ -97,7 +98,7 @@
           >          
             <v-btn
               color="success"
-              v-on:click.prevent ="saveAddress(address)"
+              @click ="saveAddress(address)"
               :disabled="invalid"
             > 
             Salvar 
@@ -131,6 +132,7 @@ export default {
       valid: true,
       id: "",
       cep: "",
+      form: 0,
       address: {},
       cepRules: [
         v => !!v || 'Insira um CEP',
@@ -179,12 +181,17 @@ export default {
       } else {
         addresses = [address]
       }
-      this.addresses = addresses;
+
       localStorage.setItem('enderecosSalvos', JSON.stringify(addresses))
+
     },
     validate(){
       this.$refs.form.validate()
+    },
+    forceRerender(){
+      this.form += 1
     }
+
   },
   watch: {
         
