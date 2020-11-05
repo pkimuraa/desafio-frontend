@@ -1,24 +1,24 @@
 <template>
   <v-app>
-    <v-content>
+    <v-main
+      class="mt-10 mr-10 ml-10"
+    >
       <v-row
         col="12"
         class="justify-space-around "
       >        
       <v-col
-        lg="9"
         md="6"
       >
         <SaveForm />
       </v-col> 
       <v-col
-        lg="2"
-        md="4"
+        md="6"
       >
         <AddressCard />
       </v-col> 
       </v-row>
-    </v-content>
+    </v-main>
   </v-app>
 </template>
 

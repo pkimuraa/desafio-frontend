@@ -21,8 +21,8 @@
               >
                 <v-col
                   cols="12"
-                  lg="6"
-                  sm="6"
+                  lg="7"
+                  sm="7"
                 >
                   <v-text-field
                   v-model="cep"
