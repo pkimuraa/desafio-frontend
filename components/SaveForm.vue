@@ -50,9 +50,17 @@
                 </v-col>
               </v-row>
             </ValidationProvider>
-              <v-text-field             
+              <v-text-field     
+                v-if="!isEmpty"        
                 v-model="address.logradouro"
+                :rules="logradouroRules"
                 label="Logradouro"
+              />
+              <v-text-field     
+                v-if="isEmpty"        
+                v-model="address.logradouro"
+                label="Logradouro"           
+                disabled
               />
               <v-text-field             
                 v-model="address.bairro"
@@ -120,19 +128,26 @@ extend('required',{
 })
 
 export default {
-
   components: {
     TheMask,
     ValidationObserver: ValidationObserver,
     ValidationProvider: ValidationProvider
 
   },
+  props:{
+    editingAddress: {
+      type: Object,
+      required: false
+    },
+  },
+
   data () {
     return {
       valid: true,
       id: "",
       cep: "",
       form: 0,
+      isEmpty: true,
       address: {},
       cepRules: [
         v => !!v || 'Insira um CEP',
@@ -140,6 +155,9 @@ export default {
       ],
       numberRules: [
         v => !!v || 'Favor inserir o numero da residencia'
+      ],
+      logradouroRules: [
+        v => !!v || 'Favor inserir o Logradouro'
       ]
     }
 
@@ -159,7 +177,11 @@ export default {
           );
         if(res.data.erro){
           alert('cep invalido')
-        } else {
+        } else if(res.data.logradouro === ""){
+          this.address = (res.data)
+          this.isEmpty = false
+
+        }else {
           this.address = (res.data)
         }
         
@@ -175,13 +197,11 @@ export default {
       address.id = new Date().getTime()
       var addresses = localStorage.getItem('enderecosSalvos')
       if(addresses) {
-        
         addresses = JSON.parse(addresses)
         addresses.push(address)
       } else {
         addresses = [address]
       }
-
       localStorage.setItem('enderecosSalvos', JSON.stringify(addresses))
 
     },
@@ -190,11 +210,15 @@ export default {
     },
     forceRerender(){
       this.form += 1
-    }
+    },
 
   },
   watch: {
-        
-  }
+    editingAddress() {
+      if (this.editingAddress) {
+        this.address = this.editingAddress;
+      }
+    }
+  },
 }
 </script>

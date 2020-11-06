@@ -7,6 +7,7 @@
     </v-card-title>
     <v-container
       v-for="address in addresses"
+      :key="address.id"
     >
       <v-row
         class="justify-space-between align-item-center"
@@ -29,7 +30,7 @@
             icon
             depressed
             color="secondary"
-            @click="editAddress(address)"
+            @click="editingAddress = address"
           > 
           <v-icon>mdi-clipboard-edit</v-icon>
           </v-btn>
@@ -42,7 +43,7 @@
           sm="12"
         >
           <v-card-text
-            class="pa-0 "
+            class="pa-0"
           > 
             Logradouro: {{address.logradouro}}
           </v-card-text>
@@ -110,19 +111,16 @@
 </template>
 
 <script>
-import SaveForm from '../components/SaveForm'
  
 export default {
+
   components: {
-    SaveForm
   },
   data () {
     return{
       addresses: [],
-      id: "",
-      cep: "",
-      form: 0,
-      address: {},
+
+
     }
   },
   created(){
@@ -140,14 +138,15 @@ export default {
       addresses = addresses.filter((address) => {
         return address.id != addressId
       });
-
       this.addresses = addresses;
-
       localStorage.setItem('enderecosSalvos', JSON.stringify(addresses))
     },
     editAddress(address){
       this.address = address
-    }
+    },
+    validate(){
+      this.$refs.form.validate()
+    },
   },
   watch:{
   }

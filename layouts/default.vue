@@ -10,7 +10,7 @@
       <v-col
         md="6"
       >
-        <SaveForm />
+        <SaveForm :editingAddress="editingAddress" />
       </v-col> 
       <v-col
         md="6"
@@ -33,21 +33,22 @@ export default {
   },
   data () {
     return {
+      form: 0,
+      addresses: [{
+        id: "",
+        cep: "",
+        logradouro: "",
+        localidade: "",
+        uf: "",
+        bairro: "",
+        numero: "",
+        complemento: "",
+      }],
+      editingAddress: null
     }
   },
-  methods:{
-    removeAddress(addressId){
-      let addresses = localStorage.getItem('enderecosSalvos')
-      if(!addresses) return;
-      addresses = JSON.parse(addresses)
-      addresses = addresses.filter((address) => {
-        return address.id != addressId
-      });
+  methods: {  
 
-      this.addresses = addresses;
-
-      localStorage.setItem('enderecosSalvos', JSON.stringify(addresses))
-    }
   }
 }
 </script>
